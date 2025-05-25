@@ -236,6 +236,14 @@ void hapusObat(const string &kode)
     delete hapus;
     cout << "Obat berhasil dihapus!\n";
 }
+void bersihkanMemori() {
+    while (awal != NULL) {
+        Obat *hapus = awal;
+        awal = awal->next;
+        delete hapus;
+    }
+    akhir = NULL;
+}
 
 int main()
 {
