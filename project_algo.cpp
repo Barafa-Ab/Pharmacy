@@ -3,6 +3,8 @@
 #include <sstream>
 #include <algorithm>
 #include <cstdio>
+#include <cstring>
+#include <limits>
 using namespace std;
 
 struct Obat
