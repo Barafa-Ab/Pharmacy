@@ -145,6 +145,36 @@ void cariObat()
     else
         cout << "Total ditemukan: " << count << " obat";
 }
+void sortObat() {
+    if (listKosong() || awal == akhir) {
+        cout << "Tidak ada data untuk diurutkan!\n";
+        return;
+    }
+
+    bool swapped;
+    Obat *ptr1;
+    Obat *lptr = NULL;
+
+    do {
+        swapped = false;
+        ptr1 = awal;
+
+        while (ptr1->next != lptr) {
+            if (ptr1->kode > ptr1->next->kode) {
+                swap(ptr1->kode, ptr1->next->kode);
+                swap(ptr1->nama, ptr1->next->nama);
+                swap(ptr1->jenis, ptr1->next->jenis);
+                swap(ptr1->harga, ptr1->next->harga);
+                swap(ptr1->stok, ptr1->next->stok);
+                swapped = true;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+
+    cout << "Data berhasil diurutkan berdasarkan kode!\n";
+}
 
 int main()
 {
