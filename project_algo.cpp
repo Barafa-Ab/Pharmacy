@@ -60,15 +60,18 @@ void tambahObat(const string &kode, const string &nama, const string &jenis, dou
 
     cout << "Obat " << nama << "' berhasil ditambahkan.\n";
 }
-void tampilMaju() {
-    if (listKosong()) {
+void tampilMaju()
+{
+    if (listKosong())
+    {
         cout << "List kosong!\n";
         return;
     }
 
     Obat *bantu = awal;
     cout << "\n======== DATA OBAT ========\n";
-    while (bantu != NULL) {
+    while (bantu != NULL)
+    {
         cout << "Kode    : " << bantu->kode << endl
              << "Nama    : " << bantu->nama << endl
              << "Jenis   : " << bantu->jenis << endl
@@ -77,6 +80,70 @@ void tampilMaju() {
              << "--------------------------\n";
         bantu = bantu->next;
     }
+}
+
+void cariObat()
+{
+    if (listKosong())
+    {
+        cout << "Daftar obat kosong!\n";
+        return;
+    }
+
+    int pilihan;
+    cout << "\nCari berdasarkan:\n1. Kode\n2. Nama\n3. Jenis\nPilihan: ";
+    cin >> pilihan;
+    cin.ignore();
+
+    string keyword;
+    cout << "Masukkan kata kunci: ";
+    getline(cin, keyword);
+    transform(keyword.begin(), keyword.end(), keyword.begin(), ::tolower);
+
+    Obat *current = awal;
+    bool found = false;
+    int count = 0;
+
+    cout << "\n======== HASIL PENCARIAN ========\n";
+    while (current != NULL)
+    {
+        string compareValue;
+        switch (pilihan)
+        {
+        case 1:
+            compareValue = current->kode;
+            break;
+        case 2:
+            compareValue = current->nama;
+            break;
+        case 3:
+            compareValue = current->jenis;
+            break;
+        default:
+            cout << "Pilihan tidak valid!\n";
+            return;
+        }
+
+        transform(compareValue.begin(), compareValue.end(), compareValue.begin(), ::tolower);
+        if (compareValue.find(keyword) != string::npos)
+        {
+            count++;
+            cout << "Obat ke-" << count << ":\n"
+                 << "Kode    : " << current->kode << endl
+                 << "Nama    : " << current->nama << endl
+                 << "Jenis   : " << current->jenis << endl
+                 << "Harga   : Rp " << current->harga << endl
+                 << "Stok    : " << current->stok << endl
+                 << "--------------------------\n";
+            found = true;
+        }
+        current = current->next;
+    }
+
+    if (!found)
+        cout << "Obat tidak ditemukan!\n";
+    else
+        cout << "Total ditemukan: " << count << " obat";
 }
 
 int main()
