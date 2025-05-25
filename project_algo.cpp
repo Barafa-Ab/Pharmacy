@@ -58,7 +58,7 @@ void tambahObat(const string &kode, const string &nama, const string &jenis, dou
         akhir = baru;
     }
 
-    cout << "Obat '" << nama << "' berhasil ditambahkan.\n";
+    cout << "Obat " << nama << "' berhasil ditambahkan.\n";
 }
 
 int main()
