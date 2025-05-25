@@ -60,6 +60,24 @@ void tambahObat(const string &kode, const string &nama, const string &jenis, dou
 
     cout << "Obat " << nama << "' berhasil ditambahkan.\n";
 }
+void tampilMaju() {
+    if (listKosong()) {
+        cout << "List kosong!\n";
+        return;
+    }
+
+    Obat *bantu = awal;
+    cout << "\n======== DATA OBAT ========\n";
+    while (bantu != NULL) {
+        cout << "Kode    : " << bantu->kode << endl
+             << "Nama    : " << bantu->nama << endl
+             << "Jenis   : " << bantu->jenis << endl
+             << "Harga   : Rp " << bantu->harga << endl
+             << "Stok    : " << bantu->stok << endl
+             << "--------------------------\n";
+        bantu = bantu->next;
+    }
+}
 
 int main()
 {
