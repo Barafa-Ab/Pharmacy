@@ -273,6 +273,42 @@ void simpanKeFile()
     fclose(file);
     cout << "Data berhasil disimpan ke file! (" << count << " obat)\n";
 }
+void muatDariFile() {
+    FILE *file = fopen("data_obat.txt", "r");
+    if (file == NULL) {
+        cout << "File masih kosong, masukkan data terlebih dahulu\n";
+        return;
+    }
+
+    bersihkanMemori();
+
+    char line[1000];
+    while (fgets(line, sizeof(line), file)) {
+        line[strcspn(line, "\n")] = 0;
+
+        stringstream ss(line);
+        string kode, nama, jenis;
+        double harga;
+        int stok;
+
+        getline(ss, kode, ',');
+        getline(ss, nama, ',');
+        getline(ss, jenis, ',');
+        ss >> harga;
+        ss.ignore();
+        ss >> stok;
+
+        Obat *baru = new Obat{kode, nama, jenis, harga, stok, NULL, NULL};
+        if (listKosong()) {
+            awal = akhir = baru;
+        } else {
+            akhir->next = baru;
+            baru->prev = akhir;
+            akhir = baru;
+        }
+    }
+    fclose(file);
+}
 
 int main()
 {
