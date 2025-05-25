@@ -1,4 +1,8 @@
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <cstdio>
 using namespace std;
 
 struct Obat
@@ -11,6 +15,51 @@ struct Obat
 };
 
 Obat *awal = NULL, *akhir = NULL;
+
+bool cekKodeUnik(const string &kode)
+{
+    Obat *current = awal;
+    while (current != NULL)
+    {
+        if (current->kode == kode)
+            return false;
+        current = current->next;
+    }
+    return true;
+}
+void buatListBaru()
+{
+    awal = akhir = NULL;
+}
+
+bool listKosong()
+{
+    return awal == NULL;
+}
+
+void tambahObat(const string &kode, const string &nama, const string &jenis, double harga, int stok)
+{
+    if (!cekKodeUnik(kode))
+    {
+        cout << "Error: Kode obat '" << kode << "' sudah ada!\n";
+        return;
+    }
+
+    Obat *baru = new Obat{kode, nama, jenis, harga, stok, NULL, NULL};
+
+    if (listKosong())
+    {
+        awal = akhir = baru;
+    }
+    else
+    {
+        akhir->next = baru;
+        baru->prev = akhir;
+        akhir = baru;
+    }
+
+    cout << "Obat '" << nama << "' berhasil ditambahkan.\n";
+}
 
 int main()
 {
