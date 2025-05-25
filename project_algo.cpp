@@ -145,8 +145,10 @@ void cariObat()
     else
         cout << "Total ditemukan: " << count << " obat";
 }
-void sortObat() {
-    if (listKosong() || awal == akhir) {
+void sortObat()
+{
+    if (listKosong() || awal == akhir)
+    {
         cout << "Tidak ada data untuk diurutkan!\n";
         return;
     }
@@ -155,12 +157,15 @@ void sortObat() {
     Obat *ptr1;
     Obat *lptr = NULL;
 
-    do {
+    do
+    {
         swapped = false;
         ptr1 = awal;
 
-        while (ptr1->next != lptr) {
-            if (ptr1->kode > ptr1->next->kode) {
+        while (ptr1->next != lptr)
+        {
+            if (ptr1->kode > ptr1->next->kode)
+            {
                 swap(ptr1->kode, ptr1->next->kode);
                 swap(ptr1->nama, ptr1->next->nama);
                 swap(ptr1->jenis, ptr1->next->jenis);
@@ -174,6 +179,62 @@ void sortObat() {
     } while (swapped);
 
     cout << "Data berhasil diurutkan berdasarkan kode!\n";
+}
+
+void hapusObat(const string &kode)
+{
+    if (listKosong())
+    {
+        cout << "List kosong!\n";
+        return;
+    }
+
+    Obat *hapus = awal;
+    while (hapus != NULL && hapus->kode != kode)
+    {
+        hapus = hapus->next;
+    }
+
+    if (hapus == NULL)
+    {
+        cout << "Obat dengan kode '" << kode << "' tidak ditemukan!\n";
+        return;
+    }
+
+    char confirm;
+    cout << "Anda akan menghapus obat:\n"
+         << "Nama: " << hapus->nama << "\nKode: " << hapus->kode
+         << "\nYakin? (y/n): ";
+    cin >> confirm;
+
+    if (tolower(confirm) != 'y')
+    {
+        cout << "Penghapusan dibatalkan!\n";
+        return;
+    }
+
+    if (hapus == awal && hapus == akhir)
+    {
+        awal = akhir = NULL;
+    }
+    else if (hapus == awal)
+    {
+        awal = hapus->next;
+        awal->prev = NULL;
+    }
+    else if (hapus == akhir)
+    {
+        akhir = hapus->prev;
+        akhir->next = NULL;
+    }
+    else
+    {
+        hapus->prev->next = hapus->next;
+        hapus->next->prev = hapus->prev;
+    }
+
+    delete hapus;
+    cout << "Obat berhasil dihapus!\n";
 }
 
 int main()
