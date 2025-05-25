@@ -236,13 +236,42 @@ void hapusObat(const string &kode)
     delete hapus;
     cout << "Obat berhasil dihapus!\n";
 }
-void bersihkanMemori() {
-    while (awal != NULL) {
+
+void bersihkanMemori()
+{
+    while (awal != NULL)
+    {
         Obat *hapus = awal;
         awal = awal->next;
         delete hapus;
     }
     akhir = NULL;
+}
+
+void simpanKeFile()
+{
+    FILE *file = fopen("data_obat.txt", "w");
+    if (file == NULL)
+    {
+        cout << "Error: Tidak dapat membuka file untuk menulis!\n";
+        return;
+    }
+
+    Obat *current = awal;
+    int count = 0;
+    while (current != NULL)
+    {
+        fprintf(file, "%s,%s,%s,%.2f,%d\n",
+                current->kode.c_str(),
+                current->nama.c_str(),
+                current->jenis.c_str(),
+                current->harga,
+                current->stok);
+        current = current->next;
+        count++;
+    }
+    fclose(file);
+    cout << "Data berhasil disimpan ke file! (" << count << " obat)\n";
 }
 
 int main()
