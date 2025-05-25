@@ -273,9 +273,11 @@ void simpanKeFile()
     fclose(file);
     cout << "Data berhasil disimpan ke file! (" << count << " obat)\n";
 }
-void muatDariFile() {
+void muatDariFile()
+{
     FILE *file = fopen("data_obat.txt", "r");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         cout << "File masih kosong, masukkan data terlebih dahulu\n";
         return;
     }
@@ -283,7 +285,8 @@ void muatDariFile() {
     bersihkanMemori();
 
     char line[1000];
-    while (fgets(line, sizeof(line), file)) {
+    while (fgets(line, sizeof(line), file))
+    {
         line[strcspn(line, "\n")] = 0;
 
         stringstream ss(line);
@@ -299,9 +302,12 @@ void muatDariFile() {
         ss >> stok;
 
         Obat *baru = new Obat{kode, nama, jenis, harga, stok, NULL, NULL};
-        if (listKosong()) {
+        if (listKosong())
+        {
             awal = akhir = baru;
-        } else {
+        }
+        else
+        {
             akhir->next = baru;
             baru->prev = akhir;
             akhir = baru;
@@ -316,15 +322,15 @@ int main()
     string kode, nama, jenis;
     double harga;
     int stok;
+    muatDariFile();
 
     do
     {
         system("cls");
-        cout << "\nSISTEM MANAJEMEN OBAT APOTEK" << endl;
-        cout << "=====================================" << endl;
-        cout << "1. Tambah Obat\n2. Tampilkan Semua Obat\n3. Cari Obat\n4. Hapus Obat\n5. Simpan ke File\n6. Keluar" << endl;
-        cout << "=====================================" << endl;
-
+        cout << "\nSISTEM MANAJEMEN OBAT APOTEK\n";
+        cout << "=====================================\n";
+        cout << "1. Tambah Obat\n2. Tampilkan Semua Obat\n3. Cari Obat\n4. Hapus Obat\n5. Simpan ke File\n6. Keluar\n";
+        cout << "=====================================\n";
         cout << "Pilih menu : ";
         cin >> pilihan;
         cin.ignore();
@@ -332,27 +338,95 @@ int main()
         switch (pilihan)
         {
         case '1':
+        {
+            system("cls");
+            int n;
+            cout << "Masukkan jumlah obat : ";
+            cin >> n;
+            cin.ignore();
+
+            if (n <= 0)
+            {
+                cout << "Jumlah input tidak boleh <= 0\n";
+                break;
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                cout << "\nObat ke-" << i + 1 << endl;
+                while (true)
+                {
+                    cout << "Kode Obat  : ";
+                    getline(cin, kode);
+                    if (!cekKodeUnik(kode))
+                    {
+                        cout << "Error: Kode obat sudah digunakan. Masukkan kode lain.\n";
+                    }
+                    else
+                        break;
+                }
+                cout << "Nama Obat  : ";
+                getline(cin, nama);
+                cout << "Jenis Obat : ";
+                getline(cin, jenis);
+
+                while (true)
+                {
+                    cout << "Harga : ";
+                    cin >> harga;
+                    cin.ignore();
+                    if (harga <= 0)
+                    {
+                        cout << "Harga tidak boleh <= 0\n";
+                        continue;
+                    }
+                    cout << "Stok  : ";
+                    cin >> stok;
+                    cin.ignore();
+                    if (stok < 0)
+                    {
+                        cout << "Stok tidak boleh < 0\n";
+                        continue;
+                    }
+                    break;
+                }
+                tambahObat(kode, nama, jenis, harga, stok);
+            }
             break;
+        }
         case '2':
+            system("cls");
+            sortObat();
+            tampilMaju();
             break;
         case '3':
+            system("cls");
+            cariObat();
             break;
         case '4':
+            system("cls");
+            cout << "Masukkan kode obat yang akan dihapus: ";
+            getline(cin, kode);
+            hapusObat(kode);
             break;
         case '5':
+            system("cls");
+            simpanKeFile();
             break;
         case '6':
+            system("cls");
+            cout << "Menyimpan data sebelum keluar...\n";
+            simpanKeFile();
+            bersihkanMemori();
+            cout << "Terima kasih telah menggunakan Sistem Manajemen Apotek!\n";
             break;
         default:
             system("cls");
-            cout << "Pilihan tidak valid! Silakan pilih 1-8.\n";
-            break;
+            cout << "Pilihan tidak valid!\n";
         }
-
         cout << "Ingin pilih menu lagi?(y/n) : ";
         cin >> lagi;
         cin.ignore();
-
     } while (lagi == 'y' || lagi == 'Y');
 
     return 0;
